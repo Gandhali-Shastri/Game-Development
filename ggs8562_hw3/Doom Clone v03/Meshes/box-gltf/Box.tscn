@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Meshes/box-gltf/scene.gltf" type="PackedScene" id=1]
+[ext_resource path="res://Meshes/box-gltf/Box.gd" type="Script" id=2]
+
+[sub_resource type="BoxShape" id=1]
+
+[node name="Box" instance=ExtResource( 1 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+script = ExtResource( 2 )
+
+[node name="ammo_trigger" type="Area" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/box01objcleanermaterialmergergles" index="1"]
+input_ray_pickable = false
+
+[node name="shape" type="CollisionShape" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/box01objcleanermaterialmergergles/ammo_trigger" index="0"]
+transform = Transform( 2.66779, 0, 0, 0, 3.18356, 0, 0, 0, 2.99368, 0.523595, -0.740652, 1.64928 )
+shape = SubResource( 1 )

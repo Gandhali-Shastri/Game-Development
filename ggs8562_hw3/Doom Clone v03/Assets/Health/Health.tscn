@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Health/Health.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Health/hp.jpg" type="Texture" id=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.988235, 0.980392, 0.980392, 1 )
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="CubeMesh" id=2]
+
+[sub_resource type="BoxShape" id=3]
+
+[node name="Health" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Holder" type="Spatial" parent="."]
+
+[node name="HealthKit" type="Spatial" parent="Holder"]
+
+[node name="MeshInstance" type="MeshInstance" parent="Holder/HealthKit"]
+material_override = SubResource( 1 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="health_trigger" type="Area" parent="Holder"]
+
+[node name="shape" type="CollisionShape" parent="Holder/health_trigger"]
+transform = Transform( 1.12787, 0, 0, 0, 1.05883, 0, 0, 0, 1.04523, 0, 0, 0 )
+shape = SubResource( 3 )

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Ammo Box/Box.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Ammo Box/ammo_crate/Crate_Mat1.material" type="Material" id=2]
+
+[sub_resource type="CubeMesh" id=1]
+material = ExtResource( 2 )
+
+[sub_resource type="BoxShape" id=2]
+
+[node name="Box" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="holder" type="Spatial" parent="."]
+
+[node name="Ammo_kit" type="Spatial" parent="holder"]
+
+[node name="MeshInstance" type="MeshInstance" parent="holder/Ammo_kit"]
+transform = Transform( 0.778233, 0, 0, 0, 0.778233, 0, 0, 0, 0.778233, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="ammo_trigger" type="Area" parent="holder"]
+
+[node name="shape" type="CollisionShape" parent="holder/ammo_trigger"]
+transform = Transform( 1.09155, 0, 0, 0, 1.11017, 0, 0, 0, 1.08668, 0, 0, 0 )
+shape = SubResource( 2 )
