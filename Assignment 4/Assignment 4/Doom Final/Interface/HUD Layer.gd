@@ -15,6 +15,7 @@ func _process( delta ) :
     print ("hp power on ")
     
     if power_timer <= 0:
+      get_node('../Player/View/powerup' ).visible = false
       print ("hp power up times up ")
       powerup_status = false
       maxHealth = 10
@@ -106,6 +107,7 @@ var currHealth = 0
 func _resetHealth( qty ) :
   
   if qty == 1.5:
+    get_node('../Player/View/powerup' ).visible = true
     powerup_status = true
     currHealth *= qty
     maxHealth *= qty

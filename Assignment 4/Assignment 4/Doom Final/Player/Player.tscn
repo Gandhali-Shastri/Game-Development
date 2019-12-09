@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Images/crosshair.png" type="Texture" id=2]
 [ext_resource path="res://Player/Images/fps_shooter_sprites.png" type="Texture" id=3]
 [ext_resource path="res://Player/Images/scopeSight.png" type="Texture" id=4]
+[ext_resource path="res://Components/Power_ups/powerup.png" type="Texture" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -78,6 +79,14 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 4 )
+expand = true
+
+[node name="powerup" type="TextureRect" parent="View"]
+visible = false
+margin_left = 21.0
+margin_right = 1571.0
+margin_bottom = 861.0
+texture = ExtResource( 5 )
 expand = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

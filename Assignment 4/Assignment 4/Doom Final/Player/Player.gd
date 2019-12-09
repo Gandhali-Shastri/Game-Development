@@ -61,8 +61,10 @@ func _physics_process( delta ) :
   if power_timer > 0 and dmg_powerup == true:
     power_timer -= delta
     print ("power on ")
+    
     if power_timer <= 0:
       print ("power up times up ")
+      get_node( 'View/powerup' ).visible = false
       dmg_powerup = false
         
   var move_vec = Vector3()
@@ -128,4 +130,5 @@ func set_spawn_status():
   return spawn_portal
 #----------------------------------------------------------
 func setDmgPowerUp():
-    dmg_powerup = true
+  get_node( 'View/powerup' ).visible = true
+  dmg_powerup = true
