@@ -53,7 +53,7 @@ func hurt( howMuch = 1 ) :
     var bodies = blast_damage.get_overlapping_bodies()
     for body in bodies:
         if body.has_method("hurt"):
-           body.hurt(Utils.dieRoll('1d2') )
+           body.hurt(Utils.dieRoll('2d2') )
         elif body.has_method("explode") :
            body.explode()
     $CollisionShape.disabled = true

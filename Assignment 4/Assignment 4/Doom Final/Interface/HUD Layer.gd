@@ -2,14 +2,27 @@ extends CanvasLayer
 
 var elapsedTime = 0
 var lastTime    = 0
-
-
+var power_timer = 10
+var powerup_status = false
 #-----------------------------------------------------------
 func _ready() :
   elapsedTime = 0
 
 #-----------------------------------------------------------
 func _process( delta ) :
+  if power_timer > 0 and powerup_status == true:
+    power_timer -= delta
+    print ("hp power on ")
+    
+    if power_timer <= 0:
+      print ("hp power up times up ")
+      powerup_status = false
+      maxHealth = 10
+      currHealth = currHealth/1.5
+      if currHealth > maxHealth:
+        currHealth = maxHealth
+      _setHealthMessage()
+  
   _updateHUDTime( delta )
 
 #-----------------------------------------------------------
@@ -91,14 +104,23 @@ var maxHealth = 0
 var currHealth = 0
 
 func _resetHealth( qty ) :
-  currHealth = qty
-  maxHealth = qty
+  
+  if qty == 1.5:
+    powerup_status = true
+    currHealth *= qty
+    maxHealth *= qty
+ 
+  else:
+    currHealth = qty
+    maxHealth = qty
+  
   _setHealthMessage()
 
 func _setHealthMessage() :
   get_node( 'Health' ).text = '%d / %d' % [ currHealth, maxHealth ]
 
 func _increamentHealth( qty ) :
+      
   if currHealth == maxHealth and qty > 0:
     return false
   currHealth += qty
@@ -109,4 +131,3 @@ func _increamentHealth( qty ) :
     $'../Player'.kill( )
   return true
 #---------------------------------------------------------------
-

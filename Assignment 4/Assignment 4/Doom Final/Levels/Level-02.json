@@ -29,6 +29,26 @@
       [ [   0.0, 0, -10.0 ], "2d2" ]
     ]
   },
+  
+  "HEALTH_POWERUP" : {
+    "tscn" : "res://Components/Power_ups/Health/Health_PowerUp.tscn",
+
+    "instances" : [
+      [ [ -15.0, 0,   0.0 ], "2d2" ],
+      [ [  0.0, 0,   15.0 ], "2d2" ]
+    ]
+  },
+  
+     "DAMAGE_POWERUP" : {
+    "tscn" : "res://Components/Power_ups/Damage/Damage_PowerUp.tscn",
+
+    "instances" : [
+      [ [ -30.0, 0,   0.0 ], "2d2" ],
+      [ [  30.0, 0,   0.0 ], "2d2" ],
+      [ [   0.0, 0,  30.0 ], "2d2" ],
+      [ [   0.0, 0, -30.0 ], "2d2" ]
+    ]
+  },
 
   "ZOMBIES" : {
     "tscn"  : "res://Zombie/Zombie.tscn",
@@ -84,6 +104,6 @@
     },
 
     "instances" : [
-      [ [ -15.9256,   0,   18.86691 ], "2d2" ] ]
+      [ [ -15.9256,   0,   18.86691 ], "5d5" ] ]
   }
 }

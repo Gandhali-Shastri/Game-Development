@@ -10,6 +10,8 @@ const FOV_NORMAL = 70
 const FOV_ZOOM   = 6
 var spawn_portal = false
 var zoomed = false
+var dmg_powerup = false
+var power_timer = 10
 
 onready var anim_player = $AnimationPlayer
 onready var raycast = $RayCast
@@ -24,6 +26,8 @@ func _ready():
   get_tree().call_group( 'obstacles', 'set_player', self )
   get_tree().call_group( 'ammos', 'set_player', self )
   get_tree().call_group( 'health_kits', 'set_player', self )
+  get_tree().call_group( 'damage_powerups', 'set_player', self )
+  get_tree().call_group( 'health_powerups', 'set_player', self )
 
 #-----------------------------------------------------------
 func _input( event ) :
@@ -53,6 +57,14 @@ func _process( __ ) :    # Not using delta so don't name it.
 
 #-----------------------------------------------------------
 func _physics_process( delta ) :
+  
+  if power_timer > 0 and dmg_powerup == true:
+    power_timer -= delta
+    print ("power on ")
+    if power_timer <= 0:
+      print ("power up times up ")
+      dmg_powerup = false
+        
   var move_vec = Vector3()
 
   if Input.is_action_pressed( 'move_forwards' ) :
@@ -81,7 +93,11 @@ func _physics_process( delta ) :
       var coll = raycast.get_collider()
       if raycast.is_colliding():
         if coll.has_method( 'hurt' ) :
-          coll.hurt()
+          print(dmg_powerup)
+          if dmg_powerup == false:
+            coll.hurt(1)
+          else:
+            coll.hurt(2)
         elif coll.has_method('explode'):
           if coll.explode():
             spawn_portal = true
@@ -110,3 +126,6 @@ func burstImpact( burst_translation, radius = 1, impact = 1 ):
 #-----------------------------------------------------------
 func set_spawn_status():
   return spawn_portal
+#----------------------------------------------------------
+func setDmgPowerUp():
+    dmg_powerup = true

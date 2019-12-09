@@ -51,7 +51,7 @@ func hurt( howMuch = 1 ) :
     dead = true
     $CollisionShape.disabled = true
     anim_player.play( 'die' )
-    print( '%s died.' % name )
+    print( '%s died. Last damage: %d' % [name, howMuch] )
     $'../Zombie Audio'._playSound( 'die' )
     $'../HUD Layer'._opponentDied()
 

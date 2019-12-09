@@ -24,7 +24,7 @@ func _physics_process(delta):
 #-----------------------------------------------------------
 func _ready() :
   get_tree().paused = false
-  
+
   level = UserData.CURRENT_LEVEL
   print(level)
   var levelData = _getLevelData( )
@@ -45,13 +45,21 @@ func _ready() :
   if zombies != null :
     _addZombies( zombies.get( 'tscn', null ), zombies.get( 'instances', [] ) )
 	
-  var exploding_zombies = levelData.get( 'EXPLODING_ZOMBIES', null )
-  if exploding_zombies != null :
-    _addZombies( exploding_zombies.get( 'tscn', null ), exploding_zombies.get( 'instances', [] ) )
-    
+  #var exploding_zombies = levelData.get( 'EXPLODING_ZOMBIES', null )
+  #if exploding_zombies != null :
+    #_addExplodingZombies( exploding_zombies.get( 'tscn', null ), exploding_zombies.get( 'instances', [] ) )
+  
   var healthKits = levelData.get( 'HEALTH_KITS', null )
   if healthKits != null :
     _addHealthKits( healthKits.get( 'tscn', null ), healthKits.get( 'instances', [] ) )
+  
+  var hp_PowerUp = levelData.get( 'HEALTH_POWERUP', null )
+  if hp_PowerUp != null :
+    _addHealthPowerUps( hp_PowerUp.get( 'tscn', null ), hp_PowerUp.get( 'instances', [] ) )
+    
+  var dmg_PowerUp = levelData.get( 'DAMAGE_POWERUP', null )
+  if dmg_PowerUp != null :
+    _addDmgPowerUps( dmg_PowerUp.get( 'tscn', null ), dmg_PowerUp.get( 'instances', [] ) )
     
   if level > 2 :
     var platform = levelData.get( 'PLATFORM', null )
@@ -193,11 +201,83 @@ func _addObstacles( model, instances ) :
     get_node( '.' ).add_child( inst )
 
 #-----------------------------------------------------------
+func _addHealthPowerUps(model, instances):
+  var inst
+  var index = 0
+
+  if model == null :
+    print( 'There were %d dmg powerup but no model?' % len( instances ) )
+    return
+
+  var damage = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    inst = damage.instance()
+    inst.setQuantity( 1.5 )
+    inst.name = 'health-powerup-%02d' % index
+    inst.translation = Vector3( pos[0], pos[1], pos[2] )
+    print( '%s at %s 15 hp' % [ inst.name, str( pos ) ] )
+    get_node( '.' ).add_child( inst )
+  
+#----------------------------------------------------------
+func _addDmgPowerUps(model, instances):
+  var inst
+  var index = 0
+
+  if model == null :
+    print( 'There were %d health power but no model?' % len( instances ) )
+    return
+
+  var healthpower = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+#    var amount  = Utils.dieRoll( instInfo[ 1 ] )
+
+    inst = healthpower.instance()
+    inst.name = 'Health-Powerup-%02d' % index
+    inst.translation = Vector3( pos[0], pos[1], pos[2] )
+    
+    print( '%s at %s.' % [ inst.name, str( pos ) ] )
+    get_node( '.' ).add_child( inst )
+    
+#-----------------------------------------------------------
+func _addExplodingZombies(model,instances):
+  var inst
+  var index = 0
+
+  if model == null :
+    print( 'There were %d explo_zombie but no model?' % len( instances ) )
+    return
+
+  var zombieScene = load( model )
+
+  get_node( 'HUD Layer' )._resetOpponents( len( instances ) )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    var hp  = Utils.dieRoll( instInfo[ 1 ] )
+
+    inst = zombieScene.instance()
+    inst.name = 'Exploding Zombie-%02d' % index
+    inst.translation = Vector3( pos[0], pos[1], pos[2] )
+    inst.setHealth( hp )
+    print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
+
+    get_node( '.' ).add_child( inst )
+  
+#-------------------------------------------------------------
 func _addZombies( model, instances, len_inst = 0 ) :
   var inst
   var index = 0
-  
-  
+    
   if len_inst == 0:
       l = len(instances)
       zombieScene = load( model )
@@ -280,5 +360,4 @@ func _getLevelData( ) :
     print( 'Level %d config file did not exist.' % levelNumber )
 
   return levelData
-
 #-----------------------------------------------------------
