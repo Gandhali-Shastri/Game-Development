@@ -44,7 +44,7 @@
   },
 
   "OBSTACLES" : {
-    "tscn" : "res://Components/Barrel/ExpBarrel.tscn",
+    "tscn" : "res://Components/Barrel/Barrel.tscn",
     "audio": {
       "burst": "res://Assets/Barrel/Audio/Explosion7.wav"
     },
@@ -86,6 +86,6 @@
 
     "instances" : [
       [ [ -15.9256,   0,   18.86691 ], "2d2" ] ]
-  },
+  }
  
 }

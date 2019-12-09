@@ -43,7 +43,7 @@
   },
 
   "OBSTACLES" : {
-    "tscn" : "res://Components/Barrel/ExpBarrel.tscn",
+    "tscn" : "res://Components/Barrel/Barrel.tscn",
     "audio": {
       "burst": "res://Assets/Barrel/Audio/Explosion7.wav"
     },
