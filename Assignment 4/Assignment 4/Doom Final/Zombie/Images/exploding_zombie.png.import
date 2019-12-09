@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/exploding.png-bc0cb7d3c4e21bcc9630e1b09ed267e6.s3tc.stex"
-path.etc2="res://.import/exploding.png-bc0cb7d3c4e21bcc9630e1b09ed267e6.etc2.stex"
+path.s3tc="res://.import/exploding_zombie.png-8e44c81125425c9459e1306d10d7f37d.s3tc.stex"
+path.etc2="res://.import/exploding_zombie.png-8e44c81125425c9459e1306d10d7f37d.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Zombie/Images/exploding.png"
-dest_files=[ "res://.import/exploding.png-bc0cb7d3c4e21bcc9630e1b09ed267e6.s3tc.stex", "res://.import/exploding.png-bc0cb7d3c4e21bcc9630e1b09ed267e6.etc2.stex" ]
+source_file="res://Zombie/Images/exploding_zombie.png"
+dest_files=[ "res://.import/exploding_zombie.png-8e44c81125425c9459e1306d10d7f37d.s3tc.stex", "res://.import/exploding_zombie.png-8e44c81125425c9459e1306d10d7f37d.etc2.stex" ]
 
 [params]
 

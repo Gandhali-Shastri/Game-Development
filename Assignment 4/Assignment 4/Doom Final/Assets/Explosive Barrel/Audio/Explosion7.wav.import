@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Explosion7.wav-2fb82ba319af29dcf0d415ae86e04002.sample"
+
+[deps]
+
+source_file="res://Assets/Explosive Barrel/Audio/Explosion7.wav"
+dest_files=[ "res://.import/Explosion7.wav-2fb82ba319af29dcf0d415ae86e04002.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -6,6 +6,10 @@ const COOLDOWN_TIME = 200
 onready var raycast = $RayCast
 onready var anim_player = $AnimationPlayer
 
+var exploding_zombie = false
+var IMPACT = 2
+var BURST_RADIUS = 9
+
 var player = null
 var dead = false
 var health = 1
@@ -55,6 +59,17 @@ func hurt( howMuch = 1 ) :
     $'../Zombie Audio'._playSound( 'die' )
     $'../HUD Layer'._opponentDied()
 
+    # Zombie Burst 
+    print( exploding_zombie )
+    if exploding_zombie:
+      $'../Zombie Audio'._playSound( "burst" )
+
+      player.burstImpact( translation, BURST_RADIUS, IMPACT )
+      get_tree().call_group( 'zombies', 'burstImpact', translation, BURST_RADIUS, IMPACT )
+      yield(get_tree().create_timer(1.0), "timeout")
+      get_tree().call_group( 'obstacles', 'burstImpact', translation, BURST_RADIUS, IMPACT )
+      get_tree().call_group( 'spawns', 'burstImpact', translation, BURST_RADIUS, IMPACT )
+
   else :
     anim_player.play( 'wounded' )
     print( '%s wounded by %d, now has %d.' % [ name, howMuch, health ] )
@@ -75,3 +90,5 @@ func burstImpact( burst_translation, radius = 1, impact = 1 ):
     hurt( impact )
 
 #-----------------------------------------------------------
+func setExplosion( value ) :
+  exploding_zombie = value

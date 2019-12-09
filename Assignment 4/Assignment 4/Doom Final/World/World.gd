@@ -43,11 +43,11 @@ func _ready() :
 
   var zombies = levelData.get( 'ZOMBIES', null )
   if zombies != null :
-    _addZombies( zombies.get( 'tscn', null ), zombies.get( 'instances', [] ) )
+    _addZombies( zombies.get( 'tscn', null ), zombies.get( 'instances', [] ), false )
 	
   var exploding_zombies = levelData.get( 'EXPLODING_ZOMBIES', null )
   if exploding_zombies != null :
-    _addZombies( exploding_zombies.get( 'tscn', null ), exploding_zombies.get( 'instances', [] ) )
+    _addZombies( exploding_zombies.get( 'tscn', null ), exploding_zombies.get( 'instances', [] ), true )
     
   var healthKits = levelData.get( 'HEALTH_KITS', null )
   if healthKits != null :
@@ -193,26 +193,17 @@ func _addObstacles( model, instances ) :
     get_node( '.' ).add_child( inst )
 
 #-----------------------------------------------------------
-func _addZombies( model, instances, len_inst = 0 ) :
+func _addZombies( model, instances, exploding = false ) :
   var inst
   var index = 0
-  
-  
-  if len_inst == 0:
-      l = len(instances)
-      zombieScene = load( model )
-#      print(zombieScene)
-  else:
-      l += len_inst
-#      print(zombieScene)
   
   if model == null :
     print( 'There were %d zombie but no model?' % len( instances ) )
     return
 
-#  zombieScene = load( model )
+  get_node( 'HUD Layer' )._increamentOpponents( len( instances ) )
 
-  get_node( 'HUD Layer' )._resetOpponents( l )
+  var zombieScene = load( model )
 
   for instInfo in instances :
     index += 1
@@ -224,6 +215,7 @@ func _addZombies( model, instances, len_inst = 0 ) :
     inst.name = 'Zombie-%02d' % index
     inst.translation = Vector3( pos[0], pos[1], pos[2] )
     inst.setHealth( hp )
+    inst.setExplosion( exploding )
     print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
 
     get_node( '.' ).add_child( inst )

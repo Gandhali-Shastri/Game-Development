@@ -1,7 +1,7 @@
 extends AudioStreamPlayer
 
 var sounds = { 
-  "burst": load( "res://Assets/Barrel/Audio/Explosion7.wav" )
+  "burst": load( "res://Assets/Explosive Barrel/Audio/Explosion7.wav" )
 }
 
 func _playSound( which, fromTime = 0.0 ) :

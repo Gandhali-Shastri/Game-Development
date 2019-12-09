@@ -21,6 +21,7 @@ func _updateHUDTime( delta ) :
 
     get_node( 'LevelTime' ).text = getTimeStr()
 
+#-----------------------------------------------------------
 func getTimeStr() :
   var minutes = int( elapsedTime / 60 )
   var seconds = int( elapsedTime - minutes*60 )
@@ -85,6 +86,11 @@ func _opponentDied() :
       $'../Message Layer/Message/Background/Restart'.disabled = true
       $'../Message Layer/Message/Background/Restart'.visible = false
       $'../Message Layer/Message'.activate( 'Level %d \nCompleted!\n%s' % [ UserData.CURRENT_LEVEL, timeStr ] );
+
+func _increamentOpponents( qty ):
+  maxOpponents += qty
+  numOpponents += qty
+  _setOpponentMessage()
 
 #-----------------------------------------------------------
 var maxHealth = 0
