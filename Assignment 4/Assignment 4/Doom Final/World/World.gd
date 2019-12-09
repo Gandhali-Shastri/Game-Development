@@ -2,31 +2,14 @@ extends Spatial
 
 const DEFAULT_MAX_AMMO = 10
 var level = 1
-var respawn_timer = Utils.dieRoll("2d5")
 var spawn_portal = false
-var zombieScene
 var zombie_scene
-var zombie_inst
-var l #zombie instance length 
-#-----------------------------------------------------------
 
-func _physics_process(delta):
-#  print("sp out",spawn_portal)
-  if level >2:
-    if respawn_timer > 0:
-        respawn_timer -= delta
-    
-#    print("sp",spawn_portal)
-    if respawn_timer <= 0:
-      spawn_portal = get_node( 'Player' ).set_spawn_status()
-      if spawn_portal == false:
-        zspawn()
 #-----------------------------------------------------------
 func _ready() :
   get_tree().paused = false
   
   level = UserData.CURRENT_LEVEL
-  print(level)
   var levelData = _getLevelData( )
   
   var arena = levelData.get('arena', null )
@@ -53,13 +36,15 @@ func _ready() :
   if healthKits != null :
     _addHealthKits( healthKits.get( 'tscn', null ), healthKits.get( 'instances', [] ) )
     
-  if level > 2 :
-    var platform = levelData.get( 'PLATFORM', null )
-    if platform != null :
-      if zombies != null :
-        zombie_scene = zombies.get( 'tscn', null )
-        zombie_inst = platform.get( 'instances', [] )
-        _addPlatform( platform.get( 'tscn', null ), platform.get( 'instances', [] )) 
+  var platform = levelData.get( 'PLATFORM', null )
+  if platform != null :
+    if zombies != null :
+      zombie_scene = zombies.get( 'tscn', null )
+      _addPlatform( platform.get( 'tscn', null ), platform.get( 'instances', [] ), zombies.get('tscn', null) ) 
+    else:
+      print("Zombies not there")
+  else:
+    print("Platform not there")
 
   get_node( 'HUD Layer' )._resetAmmo( levelData.get( 'maxAmmo', DEFAULT_MAX_AMMO ) )
   get_node( 'HUD Layer' )._resetHealth( levelData.get( 'maxHealth', DEFAULT_MAX_AMMO ) )
@@ -187,7 +172,7 @@ func _addObstacles( model, instances ) :
     inst = obstacleScene.instance()
     inst.name = 'Obstacle-%02d' % index
     inst.translation = Vector3( pos[0], yTranslation, pos[2] )
-#    inst.set_Health( hp )
+    inst.setHealth( hp )
     print( '%s at %s, %d hit points.' % [ inst.name, str( pos ), hp ] )
 
     get_node( '.' ).add_child( inst )
@@ -219,31 +204,34 @@ func _addZombies( model, instances, exploding = false ) :
     print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
 
     get_node( '.' ).add_child( inst )
+  
+  get_node( 'Player' ).set_player()
 
 #-----------------------------------------------------------
-func _addPlatform ( model, instances) :
+func _addPlatform( model, instances, zombieModel ) :
   
   if model == null :
-    print( 'There were %d ammo but no model?' % len( instances ) )
+    print( 'There were %d platform but no model?' % len( instances ) )
     return
 
   var inst
   var platScene = load( model )
+  var index = 0
 
   for instInfo in instances :
-
+    index += 1
     var pos = instInfo[ 0 ]
+    var hp  = Utils.dieRoll( instInfo[ 1 ] )
+
     inst = platScene.instance()
     inst.translation = Vector3( pos[0], pos[1], pos[2] )
-    print("Platform built")
+    inst.name = 'Platform-%02d' % index
+    inst.setHealth( hp )
+    inst.setZombieModel( zombieModel )
     get_node( '.' ).add_child( inst )
-#-------------------------------------------------------------
-func zspawn():
 
-  respawn_timer = Utils.dieRoll("2d5") 
-  var n = len( zombie_inst )
-  _addZombies( zombie_scene, zombie_inst ,n)
-  get_node( 'Player' )._ready()
+    print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
+  
 #-----------------------------------------------------------
 func _getLevelData( ) :
 	

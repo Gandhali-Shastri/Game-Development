@@ -76,11 +76,10 @@
   },
   
    "PLATFORM" : {
-    "tscn"  : "res://Components/SpawnPlatform/spawn_portal.tscn",
+    "tscn"  : "res://Components/SpawnPlatform/Platform.tscn",
 
     "instances" : [
-	  [ [ 40,    0,  40],"" ],
-	  [ [ -40,    0,  -40],"" ]
+	  [ [ 10,    0,  15],"2d2" ]
 	  ]
   },
   

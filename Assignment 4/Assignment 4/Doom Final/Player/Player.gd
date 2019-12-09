@@ -24,6 +24,7 @@ func _ready():
   get_tree().call_group( 'obstacles', 'set_player', self )
   get_tree().call_group( 'ammos', 'set_player', self )
   get_tree().call_group( 'health_kits', 'set_player', self )
+  get_tree().call_group( 'spawns', 'set_player', self )
 
 #-----------------------------------------------------------
 func _input( event ) :
@@ -110,3 +111,7 @@ func burstImpact( burst_translation, radius = 1, impact = 1 ):
 #-----------------------------------------------------------
 func set_spawn_status():
   return spawn_portal
+
+#-----------------------------------------------------------
+func set_player():
+  get_tree().call_group( 'zombies', 'set_player', self )
