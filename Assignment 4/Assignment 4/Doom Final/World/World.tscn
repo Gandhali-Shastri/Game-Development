@@ -83,16 +83,6 @@ custom_fonts/font = SubResource( 1 )
 text = "00 / 00"
 autowrap = true
 
-[node name="Key" type="Label" parent="HUD Layer"]
-visible = false
-margin_left = 479.196
-margin_top = 18.0
-margin_right = 915.196
-margin_bottom = 78.0
-custom_fonts/font = SubResource( 1 )
-text = "Portal Access On"
-autowrap = true
-
 [node name="Opponents" type="Label" parent="HUD Layer"]
 anchor_top = 1.0
 anchor_bottom = 1.0

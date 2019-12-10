@@ -69,10 +69,11 @@ func _physics_process( delta ) :
     
     if power_timer <= 0:
       print ("power up times up ")
-      get_node( 'View/doubledamage' ).visible = false
+      get_node( 'View/doubledamage').visible = false
       get_node('View/Crosshair/Control/Sprite2').visible = false
       get_node('View/Crosshair/Control/Sprite').visible = true
       dmg_powerup = false
+      power_timer = 10
         
   var move_vec = Vector3()
 
