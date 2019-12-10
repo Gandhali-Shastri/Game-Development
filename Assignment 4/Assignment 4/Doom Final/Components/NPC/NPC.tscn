@@ -1,10 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Components/NPC/NPC.gd" type="Script" id=1]
 [ext_resource path="res://Assets/NPC/npcs_sprites.png" type="Texture" id=2]
-[ext_resource path="res://Components/NPC/NPC Message.gd" type="Script" id=3]
-[ext_resource path="res://Interface/Fonts/Montserrat-ExtraBold.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://Components/NPC/NPC Talk.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Components/NPC/NPC Talk.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -24,18 +22,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 52, 51, 52, 53 ]
 }
-
-[sub_resource type="DynamicFont" id=3]
-size = 46
-outline_size = 4
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 4 )
-
-[sub_resource type="DynamicFont" id=4]
-size = 46
-outline_size = 4
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 4 )
 
 [node name="NPC" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -57,75 +43,4 @@ anims/Walk = SubResource( 2 )
 [node name="RayCast" type="RayCast" parent="."]
 visible = false
 
-[node name="NPC Message Layer" type="CanvasLayer" parent="."]
-editor/display_folded = true
-layer = 75
-
-[node name="Control" type="Control" parent="NPC Message Layer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource( 3 )
-
-[node name="Background" type="ColorRect" parent="NPC Message Layer/Control"]
-margin_left = 399.078
-margin_top = 191.816
-margin_right = 1149.08
-margin_bottom = 691.816
-color = Color( 0, 0, 0, 0.352941 )
-
-[node name="name" type="Label" parent="NPC Message Layer/Control/Background"]
-margin_left = 50.0
-margin_top = 21.6124
-margin_right = 298.0
-margin_bottom = 43.6124
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0.894118, 0.870588, 0.870588, 1 )
-text = "Alan"
-
-[node name="message" type="Label" parent="NPC Message Layer/Control/Background"]
-margin_left = 46.1732
-margin_top = 90.2185
-margin_right = 421.173
-margin_bottom = 204.219
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0.611765, 0.584314, 0.584314, 1 )
-text = "<message>"
-
-[node name="health" type="Button" parent="NPC Message Layer/Control/Background"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 50.0
-margin_top = 300.0
-margin_right = -400.0
-margin_bottom = -125.0
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.796078, 0.776471, 0.776471, 1 )
-text = "Health Kit"
-
-[node name="ammo" type="Button" parent="NPC Message Layer/Control/Background"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 400.0
-margin_top = 300.0
-margin_right = -60.0
-margin_bottom = -125.0
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.713726, 0.701961, 0.701961, 1 )
-text = "Ammo Kit"
-
-[node name="exit" type="Button" parent="NPC Message Layer/Control/Background"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 565.0
-margin_top = 400.0
-margin_right = -60.0
-margin_bottom = -25.0
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.796078, 0.776471, 0.776471, 1 )
-text = "Exit"
-
-[node name="NPC Talk" parent="." instance=ExtResource( 5 )]
-[connection signal="pressed" from="NPC Message Layer/Control/Background/health" to="NPC Message Layer/Control" method="_on_health_pressed"]
-[connection signal="pressed" from="NPC Message Layer/Control/Background/ammo" to="NPC Message Layer/Control" method="_on_ammo_pressed"]
-[connection signal="pressed" from="NPC Message Layer/Control/Background/exit" to="NPC Message Layer/Control" method="_on_exit_pressed"]
+[node name="NPC Talk" parent="." instance=ExtResource( 3 )]

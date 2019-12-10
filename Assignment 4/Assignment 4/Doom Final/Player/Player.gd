@@ -84,10 +84,6 @@ func _physics_process( delta ) :
       if raycast.is_colliding():
         if coll.has_method( 'hurt' ) :
           coll.hurt()
-        elif coll.has_method('explode'):
-          if coll.explode():
-            spawn_portal = true
-            set_spawn_status()
 
     else :
       $'../Player Audio'._playSound( 'empty' )
@@ -100,6 +96,9 @@ func _physics_process( delta ) :
     var coll = raycast.get_collider()
     if raycast.is_colliding() and coll.has_method( 'burstImpact' ) :
         get_tree().call_group( 'zombies', 'burstImpact', translation, 5, 2 )
+        get_tree().call_group( 'spawns', 'burstImpact', translation, 5, 2 )
+        get_tree().call_group( 'obstacles', 'burstImpact', translation, 5, 2 )
+        get_tree().call_group( 'npcs', 'burstImpact', translation, 5, 2 )
 #-----------------------------------------------------------
 func kill() :
   var timeStr = $'../HUD Layer'.getTimeStr()

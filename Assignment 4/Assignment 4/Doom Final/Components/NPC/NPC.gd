@@ -10,7 +10,8 @@ var MOVE_SPEED = 2
 var cooldown = 200
 var player = null
 var dead = false
-var health = 1
+var maxHealth = 1
+var currHealth = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,13 +29,15 @@ func _physics_process(delta):
   # Activating the NPC Talk module
   cooldown += 1
   var dist = translation.distance_to( player.translation ) 
-  if dist < 5.0 and not checkNearbyZombies( ) and cooldown >= 200:
+  if dist < 5.0 and not checkNearbyZombies( NEARBY_RADIUS ) and cooldown >= 200:
     npc_message_layer.activate( )
     cooldown = 0
 
   # Managing NPC Movement
   var vector = findMyDirection( )
+  
   var vec_movement = - vector + translation
+  vec_movement[1] = 0
 
   vec_movement = vec_movement.normalized()
   raycast.cast_to = vec_movement * 1.5
@@ -47,44 +50,41 @@ func set_player( p ) :
 
 #-----------------------------------------------------------
 func setHealth( hp ) :
-  health =  hp
+  maxHealth = hp
+  currHealth =  hp
 
 #-----------------------------------------------------------
-func checkNearbyZombies( ):
+func checkNearbyZombies( radius ):
   var dist = 0.0;
   for member in get_tree().get_nodes_in_group("zombies"):
     dist = translation.distance_to( member.translation ) 
-    if dist < NEARBY_RADIUS:
+    if dist < radius:
       return true
   return false
 
 #-----------------------------------------------------------
 func hurt( howMuch = 1 ) :
-  health -= howMuch
+  currHealth -= howMuch
 
-  if health <= 0 :
+  if currHealth <= 0 :
     dead = true
     self.queue_free()
 
 #-----------------------------------------------------------
 func findMyDirection( ):
-  var possible_directions = [ ]
-  possible_directions.append( translation + Vector3(20, 0, 0 ) )
-  possible_directions.append( translation + Vector3(-20, 0, 0 ) ) 
-  possible_directions.append( translation + Vector3(0, 0, 20 ) ) 
-  possible_directions.append( translation + Vector3(0, 0, -20 ) ) 
-  possible_directions.append( translation + Vector3(20, 0, 20 ) )
-  possible_directions.append( translation + Vector3(-20, 0, -20 ) ) 
-  possible_directions.append( translation + Vector3(-20, 0, 20 ) ) 
-  possible_directions.append( translation + Vector3(20, 0, -20 ) ) 
   var min_dist = 100000000
   var min_direction = null
   var dist = 0.0
-  for direction in possible_directions:
-    dist = 0.0
-    for zombie in get_tree().get_nodes_in_group("zombies"):
-      dist += direction.distance_to(zombie.translation) 
+  for zombie in get_tree().get_nodes_in_group("zombies"):
+    dist = translation.distance_to(zombie.translation) 
     if dist < min_dist:
       min_dist = dist
-      min_direction = direction 
+      min_direction = zombie.translation 
+  
+  if currHealth != maxHealth:
+    dist = translation.distance_to(player.translation) 
+    if dist < min_dist:
+      min_dist = dist
+      min_direction = player.translation 
+ 
   return min_direction
