@@ -30,6 +30,7 @@ func hurt( howMuch = 1) :
     anim_audio._playSound( "burst" )
     player.burstImpact( translation, BURST_RADIUS, IMPACT )
     get_tree().call_group( 'zombies', 'burstImpact', translation, BURST_RADIUS, IMPACT )
+    get_tree().call_group( 'zombies', 'shockState', self )
     yield(get_tree().create_timer(1.0), "timeout")
     get_tree().call_group( 'obstacles', 'burstImpact', translation, BURST_RADIUS, IMPACT )
     get_tree().call_group( 'spawns', 'burstImpact', translation, BURST_RADIUS, IMPACT )

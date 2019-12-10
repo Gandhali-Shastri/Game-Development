@@ -77,7 +77,8 @@ func _physics_process( delta ) :
 
   if Input.is_action_just_pressed( 'shoot' ) and !anim_player.is_playing() :
     if $'../HUD Layer'._ammoUsed() :
-      anim_player.play( 'shoot' )
+      anim_player.play( 'shoot' ) 
+      get_tree().call_group( 'zombies', 'shockState', self )
       $'../Player Audio'._playSound( 'shoot' )
 
       var coll = raycast.get_collider()

@@ -10,14 +10,22 @@ var exploding_zombie = false
 var IMPACT = 2
 var BURST_RADIUS = 9
 
+var state_time = 0
+var attack_distance = 20.0
+var my_state = "CHILL"
+var cooldown_time = 2.0
+var shock_time = 5.0
+var shock_object = null
+var peace_time = 10.0
+var wander_translation = null
+
 var player = null
 var dead = false
 var health = 1
-var coolTime = 200
 
 #-----------------------------------------------------------
 func _ready() :
-  anim_player.play( 'walk' )
+  anim_player.play( 'chill' )
   add_to_group( 'zombies' )
 
 #-----------------------------------------------------------
@@ -27,14 +35,51 @@ func _physics_process( delta ) :
 
   if player == null :
     return
-
+  
   var vec_to_player  
-  if coolTime > COOLDOWN_TIME:
-    vec_to_player = player.translation - translation
-  else:
-    vec_to_player = - player.translation + translation
-  coolTime += 1
 
+  state_time += delta
+  var distance_to_player = translation.distance_to( player.translation )
+  if distance_to_player < attack_distance :
+    anim_player.play( 'walk' )
+    vec_to_player = player.translation - translation
+    if my_state == "COOLDOWN":
+      if state_time < cooldown_time :
+        vec_to_player = - vec_to_player
+    else:
+      my_state = "ATTACK"
+      state_time = 0.01
+    
+  else:
+    if my_state == "SHOCK" :
+      if  state_time < shock_time :
+        vec_to_player = shock_object.translation - translation
+        anim_player.play( 'walk' )
+      else:
+        vec_to_player = translation - translation
+        my_state = "CHILL"
+        state_time = 0.01
+        anim_player.play( 'chill' )
+    elif my_state == "WANDER":
+      vec_to_player = wander_translation - translation
+      if state_time > peace_time :
+        my_state = "CHILL"
+        state_time = 0.01
+        anim_player.play( 'chill' )
+    elif my_state == "CHILL":
+      vec_to_player = translation - translation
+      if state_time > peace_time :
+        wander_translation = Utils.generate_Vector3()
+        my_state = "WANDER"
+        state_time = 0.01
+        anim_player.play( 'walk' )
+    else:
+      vec_to_player = translation - translation
+      my_state = "CHILL"
+      state_time = 0.01
+      anim_player.play( 'chill' )
+  
+  vec_to_player[1] = 0
   vec_to_player = vec_to_player.normalized()
   raycast.cast_to = vec_to_player * 1.5
 
@@ -43,8 +88,8 @@ func _physics_process( delta ) :
 
   if raycast.is_colliding() :
     var coll = raycast.get_collider()
-    if coll != null and coll.name == 'Player' and coolTime > COOLDOWN_TIME:
-      coolTime = 0
+    if coll != null and coll.name == 'Player' and my_state == "ATTACK":
+      my_state = "COOLDOWN"
       coll.hurt( 1 )
 
 #-----------------------------------------------------------
@@ -52,6 +97,8 @@ func hurt( howMuch = 1 ) :
   health -= howMuch
 
   if health <= 0 :
+    
+    get_tree().call_group( 'zombies', 'shockState', self )
     dead = true
     $CollisionShape.disabled = true
     anim_player.play( 'die' )
@@ -92,3 +139,11 @@ func burstImpact( burst_translation, radius = 1, impact = 1 ):
 #-----------------------------------------------------------
 func setExplosion( value ) :
   exploding_zombie = value
+
+#-----------------------------------------------------------
+func shockState( object ):
+  var distance_to_player = translation.distance_to( player.translation )
+  if distance_to_player > attack_distance:
+    my_state = 'SHOCK'
+    state_time = 0.01
+    shock_object = object

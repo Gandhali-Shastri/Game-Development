@@ -48,6 +48,8 @@ func hurt( howMuch = 1 ) :
   if not burst:
     currHealth -= howMuch
     if currHealth <= 0 :
+      
+      get_tree().call_group( 'zombies', 'shockState', self )
       burst = true
       print( '%s burst.' % name )
       anim_audio._playSound( "burst" )

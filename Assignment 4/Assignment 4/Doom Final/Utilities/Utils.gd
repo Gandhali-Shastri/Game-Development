@@ -14,6 +14,7 @@ func _ready() :
 #   "2d6 + 3" means roll a six sided die twice, add the results,
 #   and then add 3 to that sum.
 
+#-----------------------------------------------------------
 func dieRoll( dieStr ) :
   #print( "dieRoll( %s )" % str( dieStr ) )
 
@@ -52,6 +53,7 @@ func dieRoll( dieStr ) :
 
   return roll
 
+#-----------------------------------------------------------
 func get_aabb( length, modelSize ) :
   var count = length * 1.0 / modelSize
   var decimal = count - int( count )
@@ -60,5 +62,8 @@ func get_aabb( length, modelSize ) :
   var scale = modelNewSize * 1.0 / modelSize
   return scale
 
+#-----------------------------------------------------------
+func generate_Vector3( ):
+  return Vector3( rng.randi_range(-50,50), 0, rng.randi_range(-50,50) )
 
 #-----------------------------------------------------------
