@@ -6,6 +6,7 @@ First Aid - https://sketchfab.com/3d-models/first-aid-kit-7e596619db6e4434af091a
 
 Sound:
 Barrel Burst - 
+Axe Swing: http://soundbible.com/290-Axe-Swing.html
 
 Things to complete
 1. Barrel Explode

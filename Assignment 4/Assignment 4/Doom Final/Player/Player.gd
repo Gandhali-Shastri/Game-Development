@@ -91,7 +91,7 @@ func _physics_process( delta ) :
   if Input.is_action_just_pressed( 'hit' ) and !anim_player.is_playing() :
     
     anim_player.play( 'hit' )
-    $'../Player Audio'._playSound( 'shoot' )
+    $'../Player Audio'._playSound( 'hit' )
 
     var coll = raycast.get_collider()
     if raycast.is_colliding() and coll.has_method( 'burstImpact' ) :
