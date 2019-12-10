@@ -10,6 +10,9 @@ const FOV_NORMAL = 70
 const FOV_ZOOM   = 6
 var spawn_portal = false
 var zoomed = false
+var dmg_powerup = false
+var power_timer = 10
+var key_status = false
 
 onready var anim_player = $AnimationPlayer
 onready var raycast = $RayCast
@@ -17,15 +20,22 @@ onready var raycast = $RayCast
 #-----------------------------------------------------------
 func _ready():
   Input.set_mouse_mode( Input.MOUSE_MODE_CAPTURED )
-
+  
   yield( get_tree(), 'idle_frame' )
-
+  
   get_tree().call_group( 'zombies', 'set_player', self )
   get_tree().call_group( 'obstacles', 'set_player', self )
   get_tree().call_group( 'ammos', 'set_player', self )
   get_tree().call_group( 'health_kits', 'set_player', self )
   get_tree().call_group( 'spawns', 'set_player', self )
   get_tree().call_group( 'npcs', 'set_player', self )
+  get_tree().call_group( 'damage_powerups', 'set_player', self )
+  get_tree().call_group( 'health_powerups', 'set_player', self )
+  get_tree().call_group( 'key', 'set_player', self )
+  get_tree().call_group( 'teleport', 'set_player', self )
+  
+  get_node('View/Crosshair/Control/Sprite2').visible = false
+  
 
 #-----------------------------------------------------------
 func _input( event ) :
@@ -55,20 +65,37 @@ func _process( __ ) :    # Not using delta so don't name it.
 
 #-----------------------------------------------------------
 func _physics_process( delta ) :
+  
+  if power_timer > 0 and dmg_powerup == true:
+    power_timer -= delta
+#    print ("power on ")
+    
+    if power_timer <= 0:
+      print ("power up times up ")
+      get_node( 'View/doubledamage').visible = false
+      get_node('View/Crosshair/Control/Sprite2').visible = false
+      get_node('View/Crosshair/Control/Sprite').visible = true
+      dmg_powerup = false
+      power_timer = 10
+        
   var move_vec = Vector3()
 
   if Input.is_action_pressed( 'move_forwards' ) :
     move_vec.z -= 1
+    get_node( 'View/hit' ).visible = false
 
   if Input.is_action_pressed( 'move_backwards' ) :
     move_vec.z += 1
-
+    get_node( 'View/hit' ).visible = false
+    
   if Input.is_action_pressed( 'move_left' ) :
     move_vec.x -= 1
-
+    get_node( 'View/hit' ).visible = false
+    
   if Input.is_action_pressed( 'move_right' ) :
     move_vec.x += 1
-
+    get_node( 'View/hit' ).visible = false
+    
   move_vec = move_vec.normalized()
   move_vec = move_vec.rotated( Vector3( 0, 1, 0 ), rotation.y )
 
@@ -76,15 +103,30 @@ func _physics_process( delta ) :
   move_and_collide( move_vec * MOVE_SPEED * delta )
 
   if Input.is_action_just_pressed( 'shoot' ) and !anim_player.is_playing() :
+#    print('dd',dmg_powerup)
+    
     if $'../HUD Layer'._ammoUsed() :
-      anim_player.play( 'shoot' ) 
-      get_tree().call_group( 'zombies', 'shockState', self )
-      $'../Player Audio'._playSound( 'shoot' )
+      if dmg_powerup == false:
+        anim_player.play( 'shoot' )
+      else:
+        get_node('View/Crosshair/Control/Sprite').visible = false
+        get_node('View/Crosshair/Control/Sprite2').visible = true
+        anim_player.play( 'double_dmg' )
 
+      $'../Player Audio'._playSound( 'shoot' )
+      
       var coll = raycast.get_collider()
       if raycast.is_colliding():
         if coll.has_method( 'hurt' ) :
-          coll.hurt()
+          #print(dmg_powerup)
+          if dmg_powerup == false:
+            coll.hurt(1)
+          else:
+            coll.hurt(2)
+        elif coll.has_method('explode'):
+          if coll.explode():
+            spawn_portal = true
+            set_spawn_status()
 
     else :
       $'../Player Audio'._playSound( 'empty' )
@@ -110,6 +152,7 @@ func kill() :
 
 func hurt( qty ) :
   $'../HUD Layer'._increamentHealth( -qty )
+  get_node( 'View/hit' ).visible = true
 
 #-----------------------------------------------------------
 func burstImpact( burst_translation, radius = 1, impact = 1 ):
@@ -120,7 +163,20 @@ func burstImpact( burst_translation, radius = 1, impact = 1 ):
 #-----------------------------------------------------------
 func set_spawn_status():
   return spawn_portal
-
 #-----------------------------------------------------------
 func set_player():
   get_tree().call_group( 'zombies', 'set_player', self )
+
+#----------------------------------------------------------
+func setDmgPowerUp():
+  get_node( 'View/doubledamage' ).visible = true
+  dmg_powerup = true
+#-------------------------------------------------------------
+func has_key():
+  print(key_status)
+  return key_status
+
+func set_key_status(key = false):
+  print(key)
+  key_status = key
+  

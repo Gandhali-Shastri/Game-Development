@@ -8,7 +8,7 @@ var zombie_scene
 #-----------------------------------------------------------
 func _ready() :
   get_tree().paused = false
-  
+
   level = UserData.CURRENT_LEVEL
   var levelData = _getLevelData( )
   
@@ -35,21 +35,37 @@ func _ready() :
   var healthKits = levelData.get( 'HEALTH_KITS', null )
   if healthKits != null :
     _addHealthKits( healthKits.get( 'tscn', null ), healthKits.get( 'instances', [] ) )
-    
-  var platform = levelData.get( 'PLATFORM', null )
-  if platform != null :
-    if zombies != null :
-      zombie_scene = zombies.get( 'tscn', null )
-      _addPlatform( platform.get( 'tscn', null ), platform.get( 'instances', [] ), zombies.get('tscn', null) ) 
-    else:
-      print("Zombies not there")
-  else:
-    print("Platform not there")
-	
   
+  var hp_PowerUp = levelData.get( 'HEALTH_POWERUP', null )
+  if hp_PowerUp != null :
+    _addHealthPowerUps( hp_PowerUp.get( 'tscn', null ), hp_PowerUp.get( 'instances', [] ) )
+    
   var npc = levelData.get( 'NPC', null )
   if npc != null :
     _addNPCs( npc.get( 'tscn', null ), npc.get( 'instances', [] ) )
+
+  var dmg_PowerUp = levelData.get( 'DAMAGE_POWERUP', null )
+  if dmg_PowerUp != null :
+    _addDmgPowerUps( dmg_PowerUp.get( 'tscn', null ), dmg_PowerUp.get( 'instances', [] ) )
+   
+  var teleport = levelData.get( 'TELEPORT', null )
+  if teleport != null :
+    _addTeleportPod( teleport.get( 'tscn', null ), teleport.get( 'instances', [] ) )
+ 
+  var keyport = levelData.get( 'KEY', null )
+  if keyport != null :
+    _addKey( keyport.get( 'tscn', null ), keyport.get( 'instances', [] ) )
+  
+  if level > 2 :
+    var platform = levelData.get( 'PLATFORM', null )
+    if platform != null :
+      if zombies != null :
+        zombie_scene = zombies.get( 'tscn', null )
+        _addPlatform( platform.get( 'tscn', null ), platform.get( 'instances', [] ), zombies.get('tscn', null) ) 
+      else:
+        print("Zombies not there")
+    else:
+      print("Platform not there")
 
   get_node( 'HUD Layer' )._resetAmmo( levelData.get( 'maxAmmo', DEFAULT_MAX_AMMO ) )
   get_node( 'HUD Layer' )._resetHealth( levelData.get( 'maxHealth', DEFAULT_MAX_AMMO ) )
@@ -183,10 +199,83 @@ func _addObstacles( model, instances ) :
     get_node( '.' ).add_child( inst )
 
 #-----------------------------------------------------------
+func _addHealthPowerUps(model, instances):
+  var inst
+  var index = 0
+
+  if model == null :
+    print( 'There were %d dmg powerup but no model?' % len( instances ) )
+    return
+
+  var damage = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    inst = damage.instance()
+    inst.setQuantity( 1.5 )
+    inst.name = 'health-powerup-%02d' % index
+    inst.translation = Vector3( pos[0], pos[1], pos[2] )
+    print( '%s at %s 15 hp' % [ inst.name, str( pos ) ] )
+    get_node( '.' ).add_child( inst )
+
+#----------------------------------------------------------
+func _addDmgPowerUps(model, instances):
+  var inst
+  var index = 0
+
+  if model == null :
+    print( 'There were %d health power but no model?' % len( instances ) )
+    return
+
+  var healthpower = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+#    var amount  = Utils.dieRoll( instInfo[ 1 ] )
+
+    inst = healthpower.instance()
+    inst.name = 'Health-Powerup-%02d' % index
+    inst.translation = Vector3( pos[0], pos[1], pos[2] )
+    
+    print( '%s at %s.' % [ inst.name, str( pos ) ] )
+    get_node( '.' ).add_child( inst )
+    
+#-----------------------------------------------------------
+func _addExplodingZombies(model,instances):
+  var inst
+  var index = 0
+
+  if model == null :
+    print( 'There were %d explo_zombie but no model?' % len( instances ) )
+    return
+
+  var zombieScene = load( model )
+
+  get_node( 'HUD Layer' )._resetOpponents( len( instances ) )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    var hp  = Utils.dieRoll( instInfo[ 1 ] )
+
+    inst = zombieScene.instance()
+    inst.name = 'Exploding Zombie-%02d' % index
+    inst.translation = Vector3( pos[0], pos[1], pos[2] )
+    inst.setHealth( hp )
+    print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
+
+    get_node( '.' ).add_child( inst )
+  
+#-------------------------------------------------------------
 func _addZombies( model, instances, exploding = false ) :
   var inst
   var index = 0
-  
+    
   if model == null :
     print( 'There were %d zombie but no model?' % len( instances ) )
     return
@@ -234,6 +323,57 @@ func _addNPCs( model, instances ) :
     inst.translation = Vector3( pos[0], pos[1], pos[2] )
     inst.setHealth( hp )
     print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
+
+    get_node( '.' ).add_child( inst )
+#-----------------------------------------------------------
+func _addTeleportPod(model,instances):
+  var inst
+  var index = 0
+  var yTranslation = -1.4
+
+  if model == null :
+    print( 'There were %d obstacles but no model?' % len( instances ) )
+    return
+
+  var teleScene = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    var hp  = Utils.dieRoll( instInfo[ 1 ] )
+    
+    inst = teleScene.instance()
+    inst.name = 'teleScene-%02d' % index
+    inst.translation = Vector3( pos[0], yTranslation, pos[2] )
+#    inst.set_Health( hp )
+    print( '%s at %s, %d hit points.' % [ inst.name, str( pos ), hp ] )
+
+    get_node( '.' ).add_child( inst )
+
+#------------------------------------------------------------
+func _addKey(model,instances):
+  var inst
+  var index = 0
+  var yTranslation = -1.4
+
+  if model == null :
+    print( 'There were %d obstacles but no model?' % len( instances ) )
+    return
+
+  var KeyScene = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    var hp  = Utils.dieRoll( instInfo[ 1 ] )
+    
+    inst = KeyScene.instance()
+    inst.name = 'KeyScene-%02d' % index
+    inst.translation = Vector3( pos[0], yTranslation, pos[2] )
+#    inst.set_Health( hp )
+    print( '%s at %s, %d hit points.' % [ inst.name, str( pos ), hp ] )
 
     get_node( '.' ).add_child( inst )
 
@@ -290,5 +430,4 @@ func _getLevelData( ) :
     print( 'Level %d config file did not exist.' % levelNumber )
 
   return levelData
-
 #-----------------------------------------------------------

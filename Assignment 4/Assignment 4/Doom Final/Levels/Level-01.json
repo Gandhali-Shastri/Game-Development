@@ -22,7 +22,7 @@
     "tscn"  : "res://Components/NPC/NPC.tscn",
 
     "instances" : [
-      [ [ -5,   0.0,  5  ], "2d2" ] ]
+      [ [ -5,   0.0,  15  ], "2d2" ] ]
   },
 
   "HEALTH_KITS" : {
@@ -33,6 +33,26 @@
       [ [  10.0, 0,   0.0 ], "2d2" ],
       [ [   0.0, 0,  10.0 ], "2d2" ],
       [ [   0.0, 0, -10.0 ], "2d2" ]
+    ]
+  },
+  
+    "HEALTH_POWERUP" : {
+    "tscn" : "res://Components/Power_ups/Health/Health_PowerUp.tscn",
+
+    "instances" : [
+      [ [ -15.0, 0,   0.0 ], "2d2" ],
+      [ [  0.0, 0,   15.0 ], "2d2" ]
+    ]
+  },
+  
+     "DAMAGE_POWERUP" : {
+    "tscn" : "res://Components/Power_ups/Damage/Damage_PowerUp.tscn",
+
+    "instances" : [
+      [ [ -30.0, 0,   0.0 ], "2d2" ],
+      [ [  30.0, 0,   0.0 ], "2d2" ],
+      [ [   0.0, 0,  30.0 ], "2d2" ],
+      [ [   0.0, 0, -30.0 ], "2d2" ]
     ]
   },
 
@@ -82,6 +102,22 @@
     ]
   },
   
+       "TELEPORT" : {
+    "tscn"  : "res://Components/Teleport/Teleport.tscn",
+
+    "instances" : [
+	  [ [ 40,    0,  -40],"" ]
+	  ]
+  },
+  
+         "KEY" : {
+    "tscn"  : "res://Components/Teleport/Key.tscn",
+
+    "instances" : [
+	  [ [ -40,    0,  40],"" ]
+	  ]
+  },
+  
     "EXPLODING_ZOMBIES" : {
     "tscn"  : "res://Zombie/ExplodingZombie.tscn",
 
@@ -91,7 +127,7 @@
     },
 
     "instances" : [
-      [ [ -15.9256,   0,   18.86691 ], "2d2" ] ]
+      [ [ -15.9256,   0,   18.86691 ], "5d5" ] ]
   }
  
 }
