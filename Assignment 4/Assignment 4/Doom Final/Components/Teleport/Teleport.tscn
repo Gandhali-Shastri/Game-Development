@@ -7,7 +7,7 @@
 
 [sub_resource type="CylinderShape" id=2]
 
-[node name="Scene Root" index="0" instance=ExtResource( 1 )]
+[node name="Scene Root" instance=ExtResource( 1 )]
 transform = Transform( 0.0135907, 0, 0, 0, 0.0163338, 0, 0, 0, 0.0119863, 0, -0.734035, 0 )
 script = ExtResource( 2 )
 

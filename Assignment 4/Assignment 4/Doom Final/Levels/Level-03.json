@@ -113,7 +113,7 @@
   },
   
        "KEY" : {
-    "tscn"  : "res://Components/Teleport/Teleport.tscn",
+    "tscn"  : "res://Components/Teleport/Key.tscn",
 
     "instances" : [
 	  [ [ -40,    0,  40],"" ]
