@@ -154,10 +154,10 @@ func setDmgPowerUp():
   dmg_powerup = true
 #-------------------------------------------------------------
 func has_key():
-  print("has key now")
-  key_status = true
+  print(key_status)
   return key_status
 
-func set_key_status():
-  print('key off')
-  key_status = false
+func set_key_status(key = false):
+  print(key)
+  key_status = key
+  

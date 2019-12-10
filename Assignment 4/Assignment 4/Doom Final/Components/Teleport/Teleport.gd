@@ -16,26 +16,21 @@ func _process( delta ) :
 
 #-----------------------------------------------------------
 func _on_Area_body_entered(body):
-  print('escape')
-  key  = get_node( '../Player').has_key()
-  get_node( '../Player').set_key_status()
-  print (key)
-  if body == player and key:
-    key = false
-    print('inescp')
-    var timeStr = $'../HUD Layer'.getTimeStr()
-    if UserData.checkCompletionStatus( ):
-      UserData.increamentCurrentLevel()
-      $'../Message Layer/Message'.activate( 'Player Wins!\n%s' % timeStr )
-    else:
-      $'../Message Layer/Message/Background/Next'.disabled = false
-      $'../Message Layer/Message/Background/Next'.visible = true
-      $'../Message Layer/Message/Background/Restart'.disabled = true
-      $'../Message Layer/Message/Background/Restart'.visible = false
-      $'../Message Layer/Message'.activate( 'Level %d \nCompleted!\n%s' % [ UserData.CURRENT_LEVEL, timeStr ] );
-  
-  
-  
+ if body == player:
+    key  = get_node( '../Player').has_key()
+    if key:
+      print('inescp')
+      var timeStr = $'../HUD Layer'.getTimeStr()
+      if UserData.checkCompletionStatus( ):
+        UserData.increamentCurrentLevel()
+        $'../Message Layer/Message'.activate( 'Player Wins!\n%s' % timeStr )
+      else:
+        $'../Message Layer/Message/Background/Next'.disabled = false
+        $'../Message Layer/Message/Background/Next'.visible = true
+        $'../Message Layer/Message/Background/Restart'.disabled = true
+        $'../Message Layer/Message/Background/Restart'.visible = false
+        $'../Message Layer/Message'.activate( 'Level %d \nCompleted!\n%s' % [ UserData.CURRENT_LEVEL, timeStr ] );
+
 #-----------------------------------------------------------
 func set_player( p ) :
   player = p

@@ -19,7 +19,7 @@ func _on_Area_body_entered(body):
   if body == player:
     get_node( '../HUD Layer/Key' ).visible = true
     get_node( '../Player/View/Key' ).visible = true
-    get_node( '../Player').has_key()
+    get_node( '../Player').set_key_status(true)
     self.queue_free()
   
 #-----------------------------------------------------------

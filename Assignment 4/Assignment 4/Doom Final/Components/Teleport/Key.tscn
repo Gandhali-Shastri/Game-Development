@@ -5,7 +5,7 @@
 
 [sub_resource type="BoxShape" id=1]
 
-[node name="Scene Root" instance=ExtResource( 1 )]
+[node name="Scene Root" index="0" instance=ExtResource( 1 )]
 transform = Transform( 0.0838411, -0.00779066, -0.0539441, -0.0337478, 0.0702981, -0.062604, 0.042799, 0.0706929, 0.0563095, 1.89508, 1.957, 0.76796 )
 script = ExtResource( 2 )
 
