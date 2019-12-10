@@ -60,7 +60,16 @@ func _ready() :
   var dmg_PowerUp = levelData.get( 'DAMAGE_POWERUP', null )
   if dmg_PowerUp != null :
     _addDmgPowerUps( dmg_PowerUp.get( 'tscn', null ), dmg_PowerUp.get( 'instances', [] ) )
-    
+   
+  var teleport = levelData.get( 'TELEPORT', null )
+  if teleport != null :
+    _addTeleportPod( teleport.get( 'tscn', null ), teleport.get( 'instances', [] ) )
+ 
+  var keyport = levelData.get( 'KEY', null )
+  if keyport != null :
+    _addKey( keyport.get( 'tscn', null ), keyport.get( 'instances', [] ) )
+ 
+  
   if level > 2 :
     var platform = levelData.get( 'PLATFORM', null )
     if platform != null :
@@ -71,6 +80,7 @@ func _ready() :
 
   get_node( 'HUD Layer' )._resetAmmo( levelData.get( 'maxAmmo', DEFAULT_MAX_AMMO ) )
   get_node( 'HUD Layer' )._resetHealth( levelData.get( 'maxHealth', DEFAULT_MAX_AMMO ) )
+  get_node( 'Player').set_key_status()
 
 #-----------------------------------------------------------
 func _input( __ ) :    # Not using event so don't name it.
@@ -305,6 +315,57 @@ func _addZombies( model, instances, len_inst = 0 ) :
     inst.translation = Vector3( pos[0], pos[1], pos[2] )
     inst.setHealth( hp )
     print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
+
+    get_node( '.' ).add_child( inst )
+#-----------------------------------------------------------
+func _addTeleportPod(model,instances):
+  var inst
+  var index = 0
+  var yTranslation = -1.4
+
+  if model == null :
+    print( 'There were %d obstacles but no model?' % len( instances ) )
+    return
+
+  var teleScene = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    var hp  = Utils.dieRoll( instInfo[ 1 ] )
+    
+    inst = teleScene.instance()
+    inst.name = 'teleScene-%02d' % index
+    inst.translation = Vector3( pos[0], yTranslation, pos[2] )
+#    inst.set_Health( hp )
+    print( '%s at %s, %d hit points.' % [ inst.name, str( pos ), hp ] )
+
+    get_node( '.' ).add_child( inst )
+
+#------------------------------------------------------------
+func _addKey(model,instances):
+  var inst
+  var index = 0
+  var yTranslation = -1.4
+
+  if model == null :
+    print( 'There were %d obstacles but no model?' % len( instances ) )
+    return
+
+  var KeyScene = load( model )
+
+  for instInfo in instances :
+    index += 1
+
+    var pos = instInfo[ 0 ]
+    var hp  = Utils.dieRoll( instInfo[ 1 ] )
+    
+    inst = KeyScene.instance()
+    inst.name = 'KeyScene-%02d' % index
+    inst.translation = Vector3( pos[0], yTranslation, pos[2] )
+#    inst.set_Health( hp )
+    print( '%s at %s, %d hit points.' % [ inst.name, str( pos ), hp ] )
 
     get_node( '.' ).add_child( inst )
 

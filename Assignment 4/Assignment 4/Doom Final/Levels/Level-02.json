@@ -95,6 +95,23 @@
       [ [  20,    0,   30.0 ], "2d2" ]
     ]
   },
+  
+       "TELEPORT" : {
+    "tscn"  : "res://Components/Teleport/Teleport.tscn",
+
+    "instances" : [
+	  [ [ 40,    0,  -40],"" ]
+	  ]
+  },
+  
+         "KEY" : {
+    "tscn"  : "res://Components/Teleport/Key.tscn",
+
+    "instances" : [
+	  [ [ -40,    0,  40],"" ]
+	  ]
+  },
+  
       "EXPLODING_ZOMBIES" : {
     "tscn"  : "res://Zombie/ExplodingZombie.tscn",
 

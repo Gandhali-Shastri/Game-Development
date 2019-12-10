@@ -1,12 +1,32 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Images/crosshair.png" type="Texture" id=2]
 [ext_resource path="res://Player/Images/fps_shooter_sprites.png" type="Texture" id=3]
-[ext_resource path="res://Player/Images/scopeSight.png" type="Texture" id=4]
-[ext_resource path="res://Components/Power_ups/powerup.png" type="Texture" id=5]
+[ext_resource path="res://Components/Power_ups/double damage.png" type="Texture" id=4]
+[ext_resource path="res://Player/Images/scopeSight.png" type="Texture" id=5]
+[ext_resource path="res://Components/Power_ups/powerup.png" type="Texture" id=6]
+[ext_resource path="res://Components/Power_ups/key.png" type="Texture" id=7]
+[ext_resource path="res://Components/Power_ups/double damage1.png" type="Texture" id=8]
+[ext_resource path="res://Components/Power_ups/inc_health.png" type="Texture" id=9]
 
 [sub_resource type="CapsuleShape" id=1]
+
+[sub_resource type="Animation" id=4]
+resource_name = "double_dmg"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("View/Crosshair/Control/Sprite2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 0 ]
+}
 
 [sub_resource type="Animation" id=2]
 resource_name = "idle"
@@ -25,7 +45,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=3]
 resource_name = "shoot"
-length = 0.4
+length = 0.6
 tracks/0/type = "value"
 tracks/0/path = NodePath("View/Crosshair/Control/Sprite:frame")
 tracks/0/interp = 1
@@ -74,22 +94,51 @@ position = Vector2( 256, -257.587 )
 texture = ExtResource( 3 )
 hframes = 4
 
+[node name="Sprite2" type="Sprite" parent="View/Crosshair/Control"]
+position = Vector2( 252.816, -259.839 )
+texture = ExtResource( 4 )
+hframes = 4
+
 [node name="Scopesight" type="TextureRect" parent="View"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 expand = true
 
-[node name="powerup" type="TextureRect" parent="View"]
+[node name="hit" type="TextureRect" parent="View"]
 visible = false
 margin_left = 21.0
 margin_right = 1571.0
 margin_bottom = 861.0
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
+expand = true
+
+[node name="Key" type="TextureRect" parent="View"]
+visible = false
+margin_left = 203.635
+margin_top = 28.0453
+margin_right = 1739.63
+margin_bottom = 876.045
+texture = ExtResource( 7 )
+expand = true
+
+[node name="doubledamage" type="TextureRect" parent="View"]
+visible = false
+margin_right = 1550.0
+margin_bottom = 876.0
+texture = ExtResource( 8 )
+expand = true
+
+[node name="incHP" type="TextureRect" parent="View"]
+visible = false
+margin_right = 1543.0
+margin_bottom = 869.0
+texture = ExtResource( 9 )
 expand = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/double_dmg = SubResource( 4 )
 anims/idle = SubResource( 2 )
 anims/shoot = SubResource( 3 )
 

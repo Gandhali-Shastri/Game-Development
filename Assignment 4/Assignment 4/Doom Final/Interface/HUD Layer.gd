@@ -12,10 +12,10 @@ func _ready() :
 func _process( delta ) :
   if power_timer > 0 and powerup_status == true:
     power_timer -= delta
-    print ("hp power on ")
+#    print ("hp power on ")
     
     if power_timer <= 0:
-      get_node('../Player/View/powerup' ).visible = false
+      get_node('../Player/View/incHP' ).visible = false
       print ("hp power up times up ")
       powerup_status = false
       maxHealth = 10
@@ -107,7 +107,7 @@ var currHealth = 0
 func _resetHealth( qty ) :
   
   if qty == 1.5:
-    get_node('../Player/View/powerup' ).visible = true
+    get_node('../Player/View/incHP' ).visible = true
     powerup_status = true
     currHealth *= qty
     maxHealth *= qty
@@ -122,12 +122,11 @@ func _setHealthMessage() :
   get_node( 'Health' ).text = '%d / %d' % [ currHealth, maxHealth ]
 
 func _increamentHealth( qty ) :
-      
   if currHealth == maxHealth and qty > 0:
     return false
   currHealth += qty
   currHealth = currHealth if currHealth <= maxHealth else maxHealth
-
+  
   _setHealthMessage()
   if currHealth < 0 :
     $'../Player'.kill( )
