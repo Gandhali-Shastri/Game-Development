@@ -1,7 +1,7 @@
 extends KinematicBody
 
 onready var raycast = $RayCast
-onready var anim_player = $AnimationPlayer
+#onready var anim_player = $AnimationPlayer
 onready var npc_message_layer = $'NPC Talk/Message'
 
 var NEARBY_RADIUS = 15.0
@@ -15,7 +15,7 @@ var currHealth = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-  anim_player.play( 'Walk' )
+#  anim_player.play( 'Walk' )
   add_to_group( 'npcs' )
 
 #-----------------------------------------------------------
