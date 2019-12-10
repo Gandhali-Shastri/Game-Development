@@ -26,6 +26,8 @@ func _physics_process(delta):
   if player == null :
     return
   
+  look_at(player.translation, Vector3.UP)
+
   # Activating the NPC Talk module
   cooldown += 1
   var dist = translation.distance_to( player.translation ) 
