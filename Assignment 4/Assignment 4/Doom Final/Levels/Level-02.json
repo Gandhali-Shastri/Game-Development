@@ -85,5 +85,11 @@
 
     "instances" : [
       [ [ -15.9256,   0,   18.86691 ], "2d2" ] ]
+  },
+  "NPC" : {
+    "tscn"  : "res://Components/NPC/NPC.tscn",
+
+    "instances" : [
+      [ [ -5,   0.0,  5  ], "2d2" ] ]
   }
 }
