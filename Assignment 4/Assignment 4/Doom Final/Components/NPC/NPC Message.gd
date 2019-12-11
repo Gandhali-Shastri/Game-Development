@@ -21,12 +21,12 @@ func deactivate( ) :
 
 #-----------------------------------------------------------
 func activate( ) :
-  var msg = "We are done talking" if used else "What can I help you with?"
-  messageBox.text = msg
-  visible = true
+  if not used:
+    messageBox.text = "What can I help you with?"
+    visible = true
 
-  get_tree().paused = true
-  Input.set_mouse_mode( Input.MOUSE_MODE_VISIBLE )
+    get_tree().paused = true
+    Input.set_mouse_mode( Input.MOUSE_MODE_VISIBLE )
 
 #-----------------------------------------------------------
 func _on_Exit_pressed():

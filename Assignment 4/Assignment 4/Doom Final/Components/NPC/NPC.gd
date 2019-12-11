@@ -88,5 +88,5 @@ func findMyDirection( ):
     if dist < min_dist:
       min_dist = dist
       min_direction = player.translation 
- 
+  min_direction[0] += 1
   return min_direction
