@@ -8,18 +8,22 @@ var currHealth = 1
 var maxHealth = 1
 
 var elapsed_time = 0
-var spawningTime = 3
+var spawningTime = 5
 
 var IMPACT = 3
 var BURST_RADIUS = 20
 
+var rng = RandomNumberGenerator.new()
+
 var player = null
 var burst = false
 var zombieModel = null
+var explodingZombieModel = null
 
 #-----------------------------------------------------------
 func _ready():
   add_to_group( 'spawns' )
+  rng.randomize()
 
 #-----------------------------------------------------------
 func _process( delta ) :
@@ -28,7 +32,10 @@ func _process( delta ) :
     var spawnTime = ( spawningTime * currHealth ) / maxHealth
     if( elapsed_time > spawnTime ):
       elapsed_time = 0
-      $'../../World'._addZombies( zombieModel , [ [ [ translation[0], translation[1], translation[2] ], "2d2" ] ], false )
+      if rng.randi_range(-50,50) > 0:
+        $'../../World'._addZombies( zombieModel , [ [ [ translation[0], translation[1], translation[2] ], "2d2" ] ], false )
+      else:
+        $'../../World'._addZombies( explodingZombieModel , [ [ [ translation[0], translation[1], translation[2] ], "2d2" ] ], true )
 
 #-----------------------------------------------------------
 func setHealth( hp ) :
@@ -76,7 +83,8 @@ func burstImpact( burst_translation, radius = 1, impact = 1 ):
     hurt( impact )
 
 #-----------------------------------------------------------
-func setZombieModel( model ):
-  zombieModel = model
+func setZombieModel( Zmodel, Emodel ):
+  zombieModel = Zmodel
+  explodingZombieModel = Emodel
 
 #-----------------------------------------------------------

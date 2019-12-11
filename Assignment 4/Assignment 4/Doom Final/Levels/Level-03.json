@@ -99,7 +99,7 @@
     "tscn"  : "res://Components/SpawnPlatform/Platform.tscn",
 
     "instances" : [
-	  [ [ 40,    0,  40],"2d2" ]
+	  [ [ 40,    0,  40],"3d5" ]
 	  ]
   },
   

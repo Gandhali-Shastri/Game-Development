@@ -1,9 +1,10 @@
 extends Spatial
 
 const DEFAULT_MAX_AMMO = 10
-var level = 1
+var level
 var spawn_portal = false
 var zombie_scene
+var exploding_zombie_scene
 
 #-----------------------------------------------------------
 func _ready() :
@@ -56,16 +57,15 @@ func _ready() :
   if keyport != null :
     _addKey( keyport.get( 'tscn', null ), keyport.get( 'instances', [] ) )
   
-  if level > 2 :
-    var platform = levelData.get( 'PLATFORM', null )
-    if platform != null :
-      if zombies != null :
-        zombie_scene = zombies.get( 'tscn', null )
-        _addPlatform( platform.get( 'tscn', null ), platform.get( 'instances', [] ), zombies.get('tscn', null) ) 
-      else:
-        print("Zombies not there")
+  var platform = levelData.get( 'PLATFORM', null )
+  if platform != null :
+    if zombies != null :
+      zombie_scene = zombies.get( 'tscn', null )
+      _addPlatform( platform.get( 'tscn', null ), platform.get( 'instances', [] ), zombies.get('tscn', null), exploding_zombies.get( 'tscn', null ) ) 
     else:
-      print("Platform not there")
+      print("Zombies not there")
+  else:
+    print("Platform not there")
 
   get_node( 'HUD Layer' )._resetAmmo( levelData.get( 'maxAmmo', DEFAULT_MAX_AMMO ) )
   get_node( 'HUD Layer' )._resetHealth( levelData.get( 'maxHealth', DEFAULT_MAX_AMMO ) )
@@ -244,33 +244,6 @@ func _addDmgPowerUps(model, instances):
     print( '%s at %s.' % [ inst.name, str( pos ) ] )
     get_node( '.' ).add_child( inst )
     
-#-----------------------------------------------------------
-func _addExplodingZombies(model,instances):
-  var inst
-  var index = 0
-
-  if model == null :
-    print( 'There were %d explo_zombie but no model?' % len( instances ) )
-    return
-
-  var zombieScene = load( model )
-
-  get_node( 'HUD Layer' )._resetOpponents( len( instances ) )
-
-  for instInfo in instances :
-    index += 1
-
-    var pos = instInfo[ 0 ]
-    var hp  = Utils.dieRoll( instInfo[ 1 ] )
-
-    inst = zombieScene.instance()
-    inst.name = 'Exploding Zombie-%02d' % index
-    inst.translation = Vector3( pos[0], pos[1], pos[2] )
-    inst.setHealth( hp )
-    print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
-
-    get_node( '.' ).add_child( inst )
-  
 #-------------------------------------------------------------
 func _addZombies( model, instances, exploding = false ) :
   var inst
@@ -325,6 +298,7 @@ func _addNPCs( model, instances ) :
     print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )
 
     get_node( '.' ).add_child( inst )
+
 #-----------------------------------------------------------
 func _addTeleportPod(model,instances):
   var inst
@@ -378,7 +352,7 @@ func _addKey(model,instances):
     get_node( '.' ).add_child( inst )
 
 #-----------------------------------------------------------
-func _addPlatform( model, instances, zombieModel ) :
+func _addPlatform( model, instances, zombieModel, explodingZombieModel ) :
   
   if model == null :
     print( 'There were %d platform but no model?' % len( instances ) )
@@ -397,7 +371,7 @@ func _addPlatform( model, instances, zombieModel ) :
     inst.translation = Vector3( pos[0], pos[1], pos[2] )
     inst.name = 'Platform-%02d' % index
     inst.setHealth( hp )
-    inst.setZombieModel( zombieModel )
+    inst.setZombieModel( zombieModel, explodingZombieModel )
     get_node( '.' ).add_child( inst )
 
     print( '%s at %s, %d hp' % [ inst.name, str( pos ), hp ] )

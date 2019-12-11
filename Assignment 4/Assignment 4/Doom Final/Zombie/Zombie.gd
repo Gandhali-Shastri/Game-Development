@@ -103,6 +103,7 @@ func hurt( howMuch = 1 ) :
     
     get_tree().call_group( 'zombies', 'shockState', self )
     dead = true
+    translation[1] = 0
     $CollisionShape.disabled = true
     anim_player.play( 'die' )
     print( '%s died. Last damage: %d' % [name, howMuch] )
