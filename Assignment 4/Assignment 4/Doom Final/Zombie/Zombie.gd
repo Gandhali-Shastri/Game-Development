@@ -118,7 +118,6 @@ func hurt( howMuch = 1 ) :
       get_tree().call_group( 'spawns', 'burstImpact', translation, BURST_RADIUS, IMPACT )
 
   else :
-    anim_player.play( 'wounded' )
     print( '%s wounded by %d, now has %d.' % [ name, howMuch, health ] )
     $'../Zombie Audio'._playSound( 'grunt' )
 

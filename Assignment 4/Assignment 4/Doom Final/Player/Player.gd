@@ -112,7 +112,8 @@ func _physics_process( delta ) :
         get_node('View/Crosshair/Control/Sprite').visible = false
         get_node('View/Crosshair/Control/Sprite2').visible = true
         anim_player.play( 'double_dmg' )
-
+      
+      get_tree().call_group( 'zombies', 'shockState', self )
       $'../Player Audio'._playSound( 'shoot' )
       
       var coll = raycast.get_collider()
@@ -123,10 +124,6 @@ func _physics_process( delta ) :
             coll.hurt(1)
           else:
             coll.hurt(2)
-        elif coll.has_method('explode'):
-          if coll.explode():
-            spawn_portal = true
-            set_spawn_status()
 
     else :
       $'../Player Audio'._playSound( 'empty' )
