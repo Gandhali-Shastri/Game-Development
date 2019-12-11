@@ -8,9 +8,4 @@ Sound:
 Barrel Burst - 
 Axe Swing: http://soundbible.com/290-Axe-Swing.html
 
-Things to complete
-1. Barrel Explode
-2. Head Shot
-3. Spawning Area
-4. Level Change
-5. Health Packs
+
