@@ -84,6 +84,7 @@ text = "00 / 00"
 autowrap = true
 
 [node name="Key" type="Label" parent="HUD Layer"]
+visible = false
 margin_left = 454.0
 margin_top = 14.0
 margin_right = 882.0
