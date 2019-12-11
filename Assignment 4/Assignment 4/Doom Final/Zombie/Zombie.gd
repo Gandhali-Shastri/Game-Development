@@ -46,6 +46,9 @@ func _physics_process( delta ) :
     if my_state == "COOLDOWN":
       if state_time < cooldown_time :
         vec_to_player = - vec_to_player
+      else:
+        my_state = "ATTACK"
+        state_time = 0.01
     else:
       my_state = "ATTACK"
       state_time = 0.01
