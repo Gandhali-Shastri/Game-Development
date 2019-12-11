@@ -35,14 +35,14 @@ surfaces/0 = {
 "vertex_count": 194
 }
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="CylinderShape" id=3]
+radius = 1.06575
 
 [node name="Scene Root" type="KinematicBody"]
-transform = Transform( -0.965926, 0, 0.258819, -0.0669873, 0.965926, -0.25, -0.25, -0.258819, -0.933013, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 1 )
 
 [node name="RootNode (gltf orientation matrix)" type="Spatial" parent="."]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
 
 [node name="RootNode (model correction matrix)" type="Spatial" parent="RootNode (gltf orientation matrix)"]
@@ -68,7 +68,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.718511, 0.00439907, 0.0541147, 0.00439902, 0.861592, 0.0164174, 0.0541147, 0.0164174, 0.90597, 0, 0, 0 )
+transform = Transform( 0.702646, 0, 0, 0, 1.71164, 0, 0, 0, 0.918974, 0, 0, 0 )
 shape = SubResource( 3 )
 
 [node name="RayCast" type="RayCast" parent="."]
