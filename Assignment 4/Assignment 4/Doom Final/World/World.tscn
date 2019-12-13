@@ -71,6 +71,7 @@ stream = ExtResource( 5 )
 script = ExtResource( 6 )
 
 [node name="HUD Layer" type="CanvasLayer" parent="."]
+editor/display_folded = true
 layer = 50
 script = ExtResource( 7 )
 

@@ -73,8 +73,8 @@ func _physics_process( delta ) :
     if power_timer <= 0:
       print ("power up times up ")
       get_node( 'View/doubledamage').visible = false
-      get_node('View/Crosshair/Control/Sprite2').visible = false
-      get_node('View/Crosshair/Control/Sprite').visible = true
+#      get_node('View/Crosshair/Control/Sprite2').visible = false
+#      get_node('View/Crosshair/Control/Sprite').visible = true
       dmg_powerup = false
       power_timer = 10
         
@@ -106,13 +106,8 @@ func _physics_process( delta ) :
 #    print('dd',dmg_powerup)
     
     if $'../HUD Layer'._ammoUsed() :
-      if dmg_powerup == false:
-        anim_player.play( 'shoot' )
-      else:
-        get_node('View/Crosshair/Control/Sprite').visible = false
-        get_node('View/Crosshair/Control/Sprite2').visible = true
-        anim_player.play( 'double_dmg' )
-      
+      anim_player.play( 'shoot' )
+
       get_tree().call_group( 'zombies', 'shockState', self )
       $'../Player Audio'._playSound( 'shoot' )
       
